@@ -65,10 +65,21 @@ module.exports = ( env, argv ) => ({
           {
             loader: 'css-loader',
             options: {
-              url: false
+              url: true
             }
           },
           'sass-loader'
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'img/'
+            }
+          }
         ]
       }
     ]
@@ -84,11 +95,7 @@ module.exports = ( env, argv ) => ({
   devtool: 'inline-source-map',
 
   plugins: [
-    new CleanWebpackPlugin(
-      {
-        exclude: ['img']
-      }
-    ),
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'css/style.css'
     }),
@@ -96,7 +103,7 @@ module.exports = ( env, argv ) => ({
   ],
 
   devServer: {
-    contentBase: path.resolve(__dirname, 'public'),
+    contentBase: path.resolve(__dirname, 'dist'),
     watchContentBase: true,
     port: 3000
   }
