@@ -52,7 +52,15 @@ module.exports = ( env, argv ) => ({
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env']
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'usage',
+                    'corejs': 3
+                  }
+                ]
+              ]
             }
           }
         ],
@@ -95,7 +103,10 @@ module.exports = ( env, argv ) => ({
   devtool: 'inline-source-map',
 
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      verbose: true,
+      // cleanOnceBeforeBuildPatterns: ['**/*', '!img', '!img/*']
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/style.css'
     }),
@@ -103,6 +114,8 @@ module.exports = ( env, argv ) => ({
   ],
 
   devServer: {
+    hot: true,
+    inline: true,
     contentBase: path.resolve(__dirname, 'dist'),
     watchContentBase: true,
     port: 3000
